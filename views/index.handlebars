@@ -1,0 +1,27 @@
+<h1>Example App: Home</h1>
+
+<div>
+    <form class ="login-form" action="/user/login">
+        <label for="fl_name">Name</label>
+        <input name="fl_name" type="text"><br>
+        <label for= "email">Email</label>
+        <input name="email" type="text"><br>
+        <label for ="password">Password</label>
+        <input name="password" type="text"><br>
+        <input type="submit">
+    </form>
+</div>
+
+<div><hr></div>
+
+<div>
+    <form action="/user/register" method="post" class="signup-form" style="display: block;">
+    <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name">
+    <input name="email" type="email" class="text-input" placeholder="email">
+    <input name="password" type="password" class="text-input" placeholder="password">
+    <input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation">
+    <div>
+        <button class="blue sign-up-submit">Sign Up</button>
+    </div>
+    </form>
+</div>
