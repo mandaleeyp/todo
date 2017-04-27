@@ -2,6 +2,9 @@
 
 <div>
     We currently have {{userCount}} users.
+    {{#if currentUser}}
+        Your name is <b>{{currentUser.name}}</b>
+    {{/if}}
 </div>
 
 {{#if errors}}
