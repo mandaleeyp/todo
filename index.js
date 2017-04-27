@@ -3,9 +3,16 @@ var exphbs  = require('express-handlebars');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 var Users = require('./models/users.js');
 
 // Configure our app
+var store = new MongoDBStore({
+    uri: process.env.MONGO_URL,
+    collection: 'sessions'
+    // 'mongodb://localhost:27017/connect_mongodb_session_test'
+});
+  
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -13,7 +20,8 @@ app.use(session({
     secret: 'hello',
     resave: false,
     saveUninitialized: true,
-    cookie: {secure: 'auto'}
+    cookie: {secure: 'auto'},
+    store: store
 }))
 
 app.use(function(req, res, next){
@@ -53,14 +61,32 @@ app.post('/user/register', function (req, res) {
     newUser.email = req.body.email;
     newUser.name = req.body.fl_name;
     newUser.save(function(err, user){
-        req.session.userId = user._id;
         if (err){
+            err = 'Error registering you!'
             res.render('index', {errors: err});
         }else{
+            req.session.userId = user._id;
             res.redirect('/');
         }
     });
     console.log('The user has the email address', req.body.email);
+});
+
+app.post('/user/login', function (req, res) {
+    var user = Users.findOne({email: req.body.email}, function(err, user){
+        if(err){
+            res.send('bad login, no such user');
+            return;
+        }
+        user.comparePassword(req.body.password, function(err, isMatch){
+            if (err || !(isMatch)){
+                res.send('bad password!');
+            }else{
+                req.session.userId = user._id;
+                res.redirect('/')
+            }
+        });
+    })
 });
 
 app.get('/user/logout', function(req, res){
