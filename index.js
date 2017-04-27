@@ -20,13 +20,16 @@ app.get('/', function (req, res) {
 });
 
 app.post('/user/register', function (req, res) {
+    if(req.body.password !== req.body.password_confirmation){
+        return res.render('index', {errors: "Password and password confirmation do not match"});
+    }
     var newUser = new Users();
     newUser.hashed_password = req.body.password;
     newUser.email = req.body.email;
     newUser.name = req.body.fl_name;
     newUser.save(function(err){
         if (err){
-            res.send('there was an error saving the user');
+            res.render('index', {errors: err});
         }else{
             res.redirect('/');
         }
