@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
-mongoose.connect(process.env.MONGO_URL);
-// 'mongodb://localhost:27017/social-todo'
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;

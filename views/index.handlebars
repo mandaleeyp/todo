@@ -1,17 +1,42 @@
 <h1>Social todo app for cpsc213</h1>
 
-<div>
-    We currently have {{userCount}} users.
-    {{#if currentUser}}
-        Your name is <b>{{currentUser.name}}</b>
-    {{/if}}
-</div>
-
 {{#if errors}}
 <div style="color:red">
     {{errors}}
 </div>
 {{/if}}
+
+{{#if currentUser}}
+    <h2>Welcome, {{currentUser.name}}</h2>
+    <div>
+        <h4>Your Tasks</h4>
+        
+        {{#if tasks}}
+            <ul>
+            {{#each tasks}}
+                <li>{{this.title}}</li>
+            {{/each}}
+        {{else}}
+            No tasks to show!
+        {{/if}}
+    </ul>
+    </div>
+    <hr>
+    <div>
+        <h4>Add a New Task</h4>
+        <form action ="/tasks/create" method="POST">
+            <label name="title">Task title</label>
+            <input name="title" type="text"><br>
+            <label name="description">Task description</label>
+            <input name="description" type="text"><br>
+            Collaborators<br>
+            <input name="collaborator1" type="email"><br>
+            <input name="collaborator2" type="email"><br>
+            <input name="collaborator3" type="email"><br>
+            <input type="submit">
+        </form>
+    </div>
+{{else}}
 
 <div>
     <form class ="login" action="/user/login" method="POST">
@@ -36,3 +61,4 @@
         </div>
     </form>
 </div>
+{{/if}}
