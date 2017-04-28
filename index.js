@@ -5,7 +5,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect('mongodb://127.0.0.1:27017');
+// process.env.MONGO_URL
 var Users = require('./models/users.js');
 var Tasks = require('./models/tasks.js');
 
@@ -131,6 +132,6 @@ app.post('/tasks/create', function(req, res){
     });
 });
 
-app.listen(process.env.PORT, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Example app listening on port'+process.env.PORT);
 });
